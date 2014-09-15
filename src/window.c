@@ -71,21 +71,13 @@ char * get_time_str (struct tm * tick_time)
 	// Need to be static because it's used by the system later.
 	static char time_text[] = "00:00";
 	
-	char * time_format;
-	if (clock_is_24h_style())
-	{
-		time_format = "%R";
-	}
-	else
-	{
-		time_format = "%I:%M";
-	}
+	char * time_format = "%I:%M";
 	
 	strftime(time_text, sizeof(time_text), time_format, tick_time);
 
 	// Kludge to handle lack of non-padded hour format string
 	// for twelve hour clock.
-	if (!clock_is_24h_style() && (time_text[0] == '0'))
+	if (time_text[0] == '0')
 	{
 		//memmove(time_text, &time_text[1], sizeof(time_text) - 1);
 		time_text[0] = ' ';
