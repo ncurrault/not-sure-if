@@ -5,30 +5,35 @@
 static Window *s_window;
 static GBitmap *s_res_fry_image;
 static GFont s_res_gothic_18_bold;
-static TextLayer *s_textlayer_2;
 static BitmapLayer *s_bitmaplayer_1;
+static TextLayer *s_textlayer_2;
 static TextLayer *s_textlayer_1;
 
 static void initialise_ui(void) {
   s_window = window_create();
   window_set_background_color(s_window, GColorBlack);
-  window_set_fullscreen(s_window, 1);
+  window_set_fullscreen(s_window, true);
   
   s_res_fry_image = gbitmap_create_with_resource(RESOURCE_ID_FRY_IMAGE);
   s_res_gothic_18_bold = fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD);
+  // s_bitmaplayer_1
+  s_bitmaplayer_1 = bitmap_layer_create(GRect(0, 0, 144, 168));
+  bitmap_layer_set_bitmap(s_bitmaplayer_1, s_res_fry_image);
+  layer_add_child(window_get_root_layer(s_window), (Layer *)s_bitmaplayer_1);
+  
   // s_textlayer_2
-  s_textlayer_2 = text_layer_create(GRect(-1, 141, 146, 27));
+  #ifdef PBL_COLOR
+	  s_textlayer_2 = text_layer_create(GRect(-1, 130, 146, 27));
+  #else
+	  s_textlayer_2 = text_layer_create(GRect(-1, 141, 146, 27));
+  #endif
+  
   text_layer_set_background_color(s_textlayer_2, GColorClear);
   text_layer_set_text_color(s_textlayer_2, GColorWhite);
   text_layer_set_text(s_textlayer_2, "or 00:00 PM");
   text_layer_set_text_alignment(s_textlayer_2, GTextAlignmentCenter);
   text_layer_set_font(s_textlayer_2, s_res_gothic_18_bold);
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_textlayer_2);
-  
-  // s_bitmaplayer_1
-  s_bitmaplayer_1 = bitmap_layer_create(GRect(4, 18, 137, 112));
-  bitmap_layer_set_bitmap(s_bitmaplayer_1, s_res_fry_image);
-  layer_add_child(window_get_root_layer(s_window), (Layer *)s_bitmaplayer_1);
   
   // s_textlayer_1
   s_textlayer_1 = text_layer_create(GRect(2, 2, 141, 42));
@@ -42,8 +47,8 @@ static void initialise_ui(void) {
 
 static void destroy_ui(void) {
   window_destroy(s_window);
-  text_layer_destroy(s_textlayer_2);
   bitmap_layer_destroy(s_bitmaplayer_1);
+  text_layer_destroy(s_textlayer_2);
   text_layer_destroy(s_textlayer_1);
   gbitmap_destroy(s_res_fry_image);
 }
@@ -55,6 +60,7 @@ static void handle_window_unload(Window* window) {
 
 void show_window(void) {
   initialise_ui();
+	
   window_set_window_handlers(s_window, (WindowHandlers) {
     .unload = handle_window_unload,
   });
