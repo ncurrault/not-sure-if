@@ -22,7 +22,6 @@
         "basalt"
     ],
     "uuid": "07ce8760-83bc-4493-a766-eeb1bdc8d96d",
-    "versionCode": 1,
     "versionLabel": "1.1",
     "watchapp": {
         "watchface": true

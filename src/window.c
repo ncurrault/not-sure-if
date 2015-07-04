@@ -12,7 +12,9 @@ static TextLayer *s_textlayer_1;
 static void initialise_ui(void) {
   s_window = window_create();
   window_set_background_color(s_window, GColorBlack);
-  window_set_fullscreen(s_window, true);
+  #ifndef PBL_PLATFORM_BASALT
+    window_set_fullscreen(s_window, true);
+  #endif
   
   s_res_fry_image = gbitmap_create_with_resource(RESOURCE_ID_FRY_IMAGE);
   s_res_gothic_18_bold = fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD);
@@ -22,12 +24,7 @@ static void initialise_ui(void) {
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_bitmaplayer_1);
   
   // s_textlayer_2
-  #ifdef PBL_COLOR
-	  s_textlayer_2 = text_layer_create(GRect(-1, 130, 146, 27));
-  #else
-	  s_textlayer_2 = text_layer_create(GRect(-1, 141, 146, 27));
-  #endif
-  
+  s_textlayer_2 = text_layer_create(GRect(-1, 130, 146, 27));
   text_layer_set_background_color(s_textlayer_2, GColorClear);
   text_layer_set_text_color(s_textlayer_2, GColorWhite);
   text_layer_set_text(s_textlayer_2, "or 00:00 PM");
