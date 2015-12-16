@@ -11,20 +11,20 @@ static TextLayer *s_textlayer_1;
 
 static void initialise_ui(void) {
   s_window = window_create();
-  window_set_background_color(s_window, GColorBlack);
-  #ifndef PBL_PLATFORM_BASALT
-    window_set_fullscreen(s_window, true);
+  #if defined(PBL_ROUND)
+	layer_set_bounds(window_get_root_layer(s_window), GRect(0,0,180,180));
   #endif
+  window_set_background_color(s_window, GColorBlack); // only visible on original Pebble 
   
   s_res_fry_image = gbitmap_create_with_resource(RESOURCE_ID_FRY_IMAGE);
   s_res_gothic_18_bold = fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD);
   // s_bitmaplayer_1
-  s_bitmaplayer_1 = bitmap_layer_create(GRect(0, 0, 144, 168));
+  s_bitmaplayer_1 = bitmap_layer_create( PBL_IF_RECT_ELSE(GRect(0, 0, 144, 168), GRect(0,0,180,180)));
   bitmap_layer_set_bitmap(s_bitmaplayer_1, s_res_fry_image);
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_bitmaplayer_1);
   
   // s_textlayer_2
-  s_textlayer_2 = text_layer_create(GRect(-1, 130, 146, 27));
+  s_textlayer_2 = text_layer_create( PBL_IF_RECT_ELSE( GRect(-1, 130, 146, 27),  GRect(17, 140, 146, 27) ));
   text_layer_set_background_color(s_textlayer_2, GColorClear);
   text_layer_set_text_color(s_textlayer_2, GColorWhite);
   text_layer_set_text(s_textlayer_2, "or 00:00 PM");
@@ -33,7 +33,7 @@ static void initialise_ui(void) {
   layer_add_child(window_get_root_layer(s_window), (Layer *)s_textlayer_2);
   
   // s_textlayer_1
-  s_textlayer_1 = text_layer_create(GRect(2, 2, 141, 42));
+  s_textlayer_1 = text_layer_create( PBL_IF_RECT_ELSE(GRect(2, 2, 141, 42), GRect(17, 37, 141, 42)) );
   text_layer_set_background_color(s_textlayer_1, GColorClear);
   text_layer_set_text_color(s_textlayer_1, GColorWhite);
   text_layer_set_text(s_textlayer_1, "Not sure if 00:00 AM");
